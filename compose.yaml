@@ -1,10 +1,18 @@
+version: '3.8'
+x-database-variables:
+  &database-variables
+  SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/mentoria_academica
+  SPRING_DATASOURCE_USERNAME: user
+  SPRING_DATASOURCE_PASSWORD: password
+
 services:
-  mysql:
-    image: 'mysql:latest'
+  db:
+    image: postgres
+    container_name: db_postgresql_mentoria_academica
+    restart: always
     environment:
-      - 'MYSQL_DATABASE=mydatabase'
-      - 'MYSQL_PASSWORD=secret'
-      - 'MYSQL_ROOT_PASSWORD=verysecret'
-      - 'MYSQL_USER=myuser'
+      POSTGRES_PASSWORD: password
+      POSTGRES_USER: user
+      POSTGRES_DB: mentoria_academica
     ports:
-      - '3306:3306'
+      - "5432:5432"
