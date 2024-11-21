@@ -5,6 +5,8 @@ import com.versart.mentoria_academica.api.model.AlunoResponse;
 import com.versart.mentoria_academica.domain.service.AlunoService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,8 +22,13 @@ public class AlunoController {
     public ResponseEntity<AlunoResponse> salvarAluno(@RequestBody @Valid AlunoRequest alunoRequest) {
         return new ResponseEntity<>(alunoService.salvarAluno(alunoRequest), HttpStatus.CREATED);
     }
+
     @GetMapping
+    public ResponseEntity<Page<AlunoResponse>> listarAlunos(Pageable pageable) {
+        return ResponseEntity.ok(alunoService.listarAlunos(pageable));
+    }
+    /*@GetMapping
     public String testando(){
         return "io";
-    }
+    }*/
 }

@@ -7,6 +7,8 @@ import com.versart.mentoria_academica.domain.repository.AlunoRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -25,5 +27,15 @@ public class AlunoService {
         AlunoResponse alunoResponse = new AlunoResponse();
         BeanUtils.copyProperties(alunoSalvo,alunoResponse);
         return alunoResponse;
+    }
+
+    public Page<AlunoResponse> listarAlunos(Pageable pageable) {
+        Page<Aluno> pageAlunos = alunoRepository.findAll(pageable);
+        return pageAlunos.map( aluno -> {
+            AlunoResponse alunoResponse = new AlunoResponse();
+            BeanUtils.copyProperties(aluno,alunoResponse);
+            return alunoResponse;
+        });
+
     }
 }
