@@ -2,6 +2,7 @@ package com.versart.mentoria_academica.domain.service;
 
 import com.versart.mentoria_academica.api.model.AlunoRequest;
 import com.versart.mentoria_academica.api.model.AlunoResponse;
+import com.versart.mentoria_academica.domain.exception.NaoEncontradoException;
 import com.versart.mentoria_academica.domain.model.Aluno;
 import com.versart.mentoria_academica.domain.repository.AlunoRepository;
 import jakarta.transaction.Transactional;
@@ -10,6 +11,8 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -37,5 +40,16 @@ public class AlunoService {
             return alunoResponse;
         });
 
+    }
+    @Transactional
+    public AlunoResponse alterarAluno(UUID id, AlunoRequest alunoRequest) {
+       return alunoRepository.findById(id).map(
+                aluno -> {
+                    BeanUtils.copyProperties(alunoRequest, aluno);
+                    AlunoResponse alunoResponse = new AlunoResponse();
+                    BeanUtils.copyProperties(aluno,alunoResponse);
+                    return alunoResponse;
+                }
+        ).orElseThrow(() -> new NaoEncontradoException("Aluno não encontrado"));
     }
 }

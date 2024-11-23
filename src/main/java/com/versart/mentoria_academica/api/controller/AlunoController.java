@@ -11,6 +11,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.UUID;
+
 @RestController
 @RequestMapping("/alunos")
 @RequiredArgsConstructor
@@ -27,8 +29,10 @@ public class AlunoController {
     public ResponseEntity<Page<AlunoResponse>> listarAlunos(Pageable pageable) {
         return ResponseEntity.ok(alunoService.listarAlunos(pageable));
     }
-    /*@GetMapping
-    public String testando(){
-        return "io";
-    }*/
+
+    @PutMapping("/{id}")
+    public ResponseEntity<AlunoResponse> alterarAluno(@PathVariable UUID id, @RequestBody AlunoRequest alunoRequest) {
+        return ResponseEntity.ok(alunoService.alterarAluno(id,alunoRequest));
+    }
+
 }
