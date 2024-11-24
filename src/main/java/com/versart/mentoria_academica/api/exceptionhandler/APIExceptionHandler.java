@@ -54,7 +54,7 @@ public class APIExceptionHandler extends ResponseEntityExceptionHandler {
     protected ResponseEntity<Object> handleTypeMismatch(TypeMismatchException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request){
         Problema problema = Problema.builder()
                 .statusCode(status.value())
-                .messagem("Id não encontrado")
+                .messagem("Id inválido")
                 .dataHora(OffsetDateTime.now())
                 .build();
 

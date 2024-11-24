@@ -30,9 +30,20 @@ public class AlunoController {
         return ResponseEntity.ok(alunoService.listarAlunos(pageable));
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<AlunoResponse> buscarAlunoPorId(@PathVariable UUID id) {
+        return ResponseEntity.ok(alunoService.buscarAlunoPorId(id));
+    }
+
     @PutMapping("/{id}")
     public ResponseEntity<AlunoResponse> alterarAluno(@PathVariable UUID id, @RequestBody AlunoRequest alunoRequest) {
         return ResponseEntity.ok(alunoService.alterarAluno(id,alunoRequest));
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deletarAluno(@PathVariable UUID id) {
+        alunoService.deletarAluno(id);
+        return ResponseEntity.noContent().build();
     }
 
 }

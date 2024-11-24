@@ -41,6 +41,17 @@ public class AlunoService {
         });
 
     }
+
+    public AlunoResponse buscarAlunoPorId(UUID id) {
+        return alunoRepository.findById(id).map(
+                aluno -> {
+                    AlunoResponse alunoResponse = new AlunoResponse();
+                    BeanUtils.copyProperties(aluno, alunoResponse);
+                    return alunoResponse;
+                }
+        ).orElseThrow(() -> new NaoEncontradoException("Aluno não encontrado"));
+    }
+
     @Transactional
     public AlunoResponse alterarAluno(UUID id, AlunoRequest alunoRequest) {
        return alunoRepository.findById(id).map(
@@ -52,4 +63,16 @@ public class AlunoService {
                 }
         ).orElseThrow(() -> new NaoEncontradoException("Aluno não encontrado"));
     }
+
+    @Transactional
+    public void deletarAluno(UUID id) {
+        if(alunoRepository.existsById(id)){
+            alunoRepository.deleteById(id);
+        }
+        else{
+            throw new NaoEncontradoException("Aluno não encontrado");
+        }
+    }
+
+
 }
