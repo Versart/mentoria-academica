@@ -2,6 +2,7 @@ package com.versart.mentoria_academica.domain.service;
 
 import com.versart.mentoria_academica.api.model.AlunoRequest;
 import com.versart.mentoria_academica.api.model.AlunoResponse;
+import com.versart.mentoria_academica.domain.exception.DadoUnicoDuplicadoException;
 import com.versart.mentoria_academica.domain.exception.NaoEncontradoException;
 import com.versart.mentoria_academica.domain.model.Aluno;
 import com.versart.mentoria_academica.domain.repository.AlunoRepository;
@@ -23,6 +24,9 @@ public class AlunoService {
 
     @Transactional
     public AlunoResponse salvarAluno(AlunoRequest alunoRequest) {
+        if(alunoRepository.existsByCodigo(alunoRequest.codigo())){
+            throw new DadoUnicoDuplicadoException("Código já utilizado");
+        }
         var aluno = new Aluno();
         BeanUtils.copyProperties(alunoRequest, aluno);
         Aluno alunoSalvo = alunoRepository.save(aluno);
