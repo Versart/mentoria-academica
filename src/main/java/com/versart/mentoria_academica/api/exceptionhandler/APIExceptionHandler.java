@@ -1,5 +1,6 @@
 package com.versart.mentoria_academica.api.exceptionhandler;
 
+import com.versart.mentoria_academica.domain.exception.DadoUnicoDuplicadoException;
 import com.versart.mentoria_academica.domain.exception.NaoEncontradoException;
 import org.springframework.beans.TypeMismatchException;
 import org.springframework.http.HttpHeaders;
@@ -59,6 +60,17 @@ public class APIExceptionHandler extends ResponseEntityExceptionHandler {
                 .build();
 
         return handleExceptionInternal(ex,problema,new HttpHeaders(),status,request);
+    }
 
+    @ExceptionHandler(DadoUnicoDuplicadoException.class)
+    public ResponseEntity<Object> handleDadoUnicoDuplicado(DadoUnicoDuplicadoException ex, WebRequest request ) {
+        HttpStatus httpStatus = HttpStatus.CONFLICT;
+        Problema problema = Problema.builder()
+                .statusCode(httpStatus.value())
+                .dataHora(OffsetDateTime.now())
+                .messagem(ex.getMessage())
+                .build();
+
+        return handleExceptionInternal(ex,problema,new HttpHeaders(),httpStatus,request);
     }
 }
