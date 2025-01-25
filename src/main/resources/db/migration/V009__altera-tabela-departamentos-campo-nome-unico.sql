@@ -1,0 +1,1 @@
+alter table departamentos add constraint uq_nome unique(nome);
