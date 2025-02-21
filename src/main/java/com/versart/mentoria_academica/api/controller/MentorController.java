@@ -1,10 +1,7 @@
 package com.versart.mentoria_academica.api.controller;
 
-import com.versart.mentoria_academica.api.model.AlunoRequest;
-import com.versart.mentoria_academica.api.model.AlunoResponse;
 import com.versart.mentoria_academica.api.model.MentorRequest;
 import com.versart.mentoria_academica.api.model.MentorResponse;
-import com.versart.mentoria_academica.domain.service.AlunoService;
 import com.versart.mentoria_academica.domain.service.MentorService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
