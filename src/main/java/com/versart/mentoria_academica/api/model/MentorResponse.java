@@ -16,5 +16,7 @@ public class MentorResponse {
 
     private String nomeCompleto;
 
-    private String departamento;
+    private String departamentoNome;
+
+
 }
