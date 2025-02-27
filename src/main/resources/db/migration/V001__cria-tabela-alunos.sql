@@ -1,4 +1,4 @@
-create table alunos(
+create table if not exists alunos(
     id varchar(255) primary key,
     codigo varchar(20) not null,
     curso varchar(100) not null,
