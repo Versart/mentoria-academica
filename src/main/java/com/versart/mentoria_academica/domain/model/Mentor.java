@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.Set;
 import java.util.UUID;
 
 @Entity
@@ -24,5 +25,19 @@ public class Mentor {
 
     private String nomeCompleto;
 
-    private String departamento;
+    @ManyToOne
+    @JoinColumn(name = "departamento_id")
+    private Departamento departamento;
+
+    private String descricao;
+
+    @ManyToMany
+    @JoinTable(
+            name = "mentores_especialidades",
+            joinColumns = @JoinColumn(name = "mentor_id"),
+            inverseJoinColumns = @JoinColumn(name = "especialidade_id")
+    )
+    private Set<Especialidade> especialidades;
+
+
 }
