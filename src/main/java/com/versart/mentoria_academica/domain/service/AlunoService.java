@@ -30,7 +30,6 @@ public class AlunoService {
         var aluno = new Aluno();
         BeanUtils.copyProperties(alunoRequest, aluno);
         Aluno alunoSalvo = alunoRepository.save(aluno);
-        System.out.println(alunoSalvo.getId());
         AlunoResponse alunoResponse = new AlunoResponse();
         BeanUtils.copyProperties(alunoSalvo,alunoResponse);
         return alunoResponse;
