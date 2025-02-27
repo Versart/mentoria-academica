@@ -1,0 +1,1 @@
+alter table mentores add column descricao text;
