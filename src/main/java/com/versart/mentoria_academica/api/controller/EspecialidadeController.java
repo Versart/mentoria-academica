@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/especialidades")
+@RequestMapping("/v1/especialidades")
 @RequiredArgsConstructor
 public class EspecialidadeController {
 

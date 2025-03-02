@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/alunos")
+@RequestMapping("/v1/alunos")
 @RequiredArgsConstructor
 public class AlunoController {
 

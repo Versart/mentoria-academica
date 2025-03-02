@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/mentores")
+@RequestMapping("/v1/mentores")
 @RequiredArgsConstructor
 
 public class MentorController {

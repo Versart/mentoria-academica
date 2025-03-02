@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/departamentos")
+@RequestMapping("/v1/departamentos")
 @RequiredArgsConstructor
 public class DepartamentoController {
 
