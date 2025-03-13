@@ -48,7 +48,7 @@ public class MentorController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deletarAluno(@PathVariable UUID id) {
-        log.info("Requisição recebida para deletar o mentor com o id {}", id);
+        log.info("Requisição recebida para remover o mentor com o id {}", id);
         mentorService.deletarMentor(id);
         return ResponseEntity.noContent().build();
     }
