@@ -43,7 +43,6 @@ public class MentorService {
     public Page<MentorResponse> listarMentores(Pageable pageable) {
         Page<Mentor> pageMentores = mentorRepository.findAll(pageable);
         return pageMentores.map( mentor -> {
-            MentorResponse mentorResponse = new MentorResponse();
             return mentorMapper.toMentorResponse(mentor);
         });
 
