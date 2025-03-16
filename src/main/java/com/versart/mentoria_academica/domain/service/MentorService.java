@@ -68,7 +68,6 @@ public class MentorService {
                     Mentor mentorAlterado = mentorMapper.toMentor(mentorRequest,especialidadeRepository,departamentoRepository);
                     mentorAlterado.setId(id);
                     mentorRepository.save(mentorAlterado);
-                    MentorResponse mentorResponse = new MentorResponse();
                     return mentorMapper.toMentorResponse(mentorAlterado);
                 }
         ).orElseThrow(() -> new NaoEncontradoException("Mentor não encontrado"));
