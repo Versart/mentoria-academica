@@ -1,0 +1,1 @@
+alter table especialidades add constraint uq_especialidades_nome unique(nome);
