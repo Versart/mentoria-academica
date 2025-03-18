@@ -11,6 +11,7 @@ import com.versart.mentoria_academica.domain.repository.EspecialidadeRepository;
 import com.versart.mentoria_academica.domain.repository.MentorRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -19,6 +20,7 @@ import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class MentorService {
 
     private final MentorRepository mentorRepository;
@@ -31,34 +33,31 @@ public class MentorService {
 
     @Transactional
     public MentorResponse salvarMentor(MentorRequest mentorRequest) {
+        log.info("Criando um novo mentor");
         if(verificarSeCodigoExiste(mentorRequest.codigo())){
             throw new DadoUnicoDuplicadoException("Código já utilizado");
         }
         Mentor mentor = mentorMapper.toMentor(mentorRequest,especialidadeRepository,departamentoRepository);
         Mentor mentorSalvo = mentorRepository.save(mentor);
-        MentorResponse mentorResponse = mentorMapper.toMentorResponse(mentorSalvo);
-        return mentorResponse;
+        return mentorMapper.toMentorResponse(mentorSalvo);
     }
 
     public Page<MentorResponse> listarMentores(Pageable pageable) {
+        log.info("Buscando todos os mentores");
         Page<Mentor> pageMentores = mentorRepository.findAll(pageable);
-        return pageMentores.map( mentor -> {
-            return mentorMapper.toMentorResponse(mentor);
-        });
+        return pageMentores.map(mentorMapper::toMentorResponse);
 
     }
 
     public MentorResponse buscarMentorPorId(UUID id) {
-        return mentorRepository.findById(id).map(
-                mentor -> {
-                    MentorResponse mentorResponse = new MentorResponse();
-                    return mentorMapper.toMentorResponse(mentor);
-                }
-        ).orElseThrow(() -> new NaoEncontradoException("Mentor não encontrado"));
+        log.info("Buscando o mentor com o id {}", id);
+        return mentorRepository.findById(id).map(mentorMapper::toMentorResponse)
+                .orElseThrow(() -> new NaoEncontradoException("Mentor não encontrado"));
     }
 
     @Transactional
     public MentorResponse alterarMentor(UUID id, MentorRequest mentorRequest) {
+        log.info("Alterando o mentor com o id {}", id);
         if(verificarSeCodigoExiste(mentorRequest.codigo())){
             throw new DadoUnicoDuplicadoException("Código já utilizado");
         }
@@ -74,6 +73,7 @@ public class MentorService {
 
     @Transactional
     public void deletarMentor(UUID id) {
+        log.info("Removendo o mentor com o id");
         if(mentorRepository.existsById(id)){
             mentorRepository.deleteById(id);
         }
@@ -83,6 +83,7 @@ public class MentorService {
     }
 
     private boolean verificarSeCodigoExiste(String codigo) {
+        log.info("Verificando se existe um mentor com o código {}", codigo);
         return mentorRepository.existsByCodigo(codigo);
     }
 }
