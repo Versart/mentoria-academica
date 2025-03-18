@@ -50,4 +50,6 @@ public interface MentorMapper {
                 }
         ).collect(Collectors.toSet());
     }
+
+    Set<MentorResponse> toMentorResponseSet(Set<Mentor> mentores);
 }
