@@ -1,5 +1,6 @@
 package com.versart.mentoria_academica.domain.service;
 
+import com.versart.mentoria_academica.api.mapper.EspecialidadeMapper;
 import com.versart.mentoria_academica.api.model.EspecialidadeRequest;
 import com.versart.mentoria_academica.api.model.EspecialidadeResponse;
 import com.versart.mentoria_academica.domain.exception.DadoUnicoDuplicadoException;
@@ -8,7 +9,6 @@ import com.versart.mentoria_academica.domain.model.Especialidade;
 import com.versart.mentoria_academica.domain.repository.EspecialidadeRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -21,48 +21,39 @@ public class EspecialidadeService {
 
     private final EspecialidadeRepository especialidadeRepository;
 
+    private final EspecialidadeMapper especialidadeMapper;
+
     @Transactional
     public EspecialidadeResponse salvarEspecialidade(EspecialidadeRequest especialidadeRequest) {
-        if(especialidadeRepository.existsByNome(especialidadeRequest.nome())){
+        if(verificarSeNomeExiste(especialidadeRequest.nome())){
             throw new DadoUnicoDuplicadoException("Especialidade já cadastrada!");
         }
-        var especialidade = new Especialidade();
-        BeanUtils.copyProperties(especialidadeRequest, especialidade);
+        var especialidade = especialidadeMapper.toEspecialidade(especialidadeRequest);
         var especialidadeSalva = especialidadeRepository.save(especialidade);
-        EspecialidadeResponse especialidadeResponse = new EspecialidadeResponse();
-        BeanUtils.copyProperties(especialidadeSalva, especialidadeResponse);
-        return especialidadeResponse;
+        return especialidadeMapper.toEspecialidadeResponse(especialidadeSalva);
     }
 
     public Page<EspecialidadeResponse> listarEspecialidades(Pageable pageable) {
         Page<Especialidade> especialidades = especialidadeRepository.findAll(pageable);
-        return  especialidades.map(
-                especialidade -> {
-                    EspecialidadeResponse especialidadeResponse = new EspecialidadeResponse();
-                    BeanUtils.copyProperties(especialidade,especialidadeResponse);
-                    return  especialidadeResponse;
-                }
-        );
+        return  especialidades.map(especialidadeMapper::toEspecialidadeResponse);
     }
 
     public EspecialidadeResponse buscarEspecialidadePorId(UUID id) {
-        return especialidadeRepository.findById(id).map(
-                especialidade -> {
-                    EspecialidadeResponse especialidadeResponse = new EspecialidadeResponse();
-                    BeanUtils.copyProperties(especialidade,especialidadeResponse);
-                    return especialidadeResponse;
-                }
-        ).orElseThrow(() -> new NaoEncontradoException("Especialidade não encontrada"));
+        return especialidadeRepository.findById(id).map(especialidadeMapper::toEspecialidadeResponse)
+                .orElseThrow(() -> new NaoEncontradoException("Especialidade não encontrada"));
     }
 
     @Transactional
     public EspecialidadeResponse alterarEspecialidade(UUID id, EspecialidadeRequest especialidadeRequest) {
+        if(verificarSeNomeExiste(especialidadeRequest.nome())){
+            throw new DadoUnicoDuplicadoException("Especialidade já cadastrada!");
+        }
         return especialidadeRepository.findById(id).map(
             especialidade -> {
-                BeanUtils.copyProperties(especialidadeRequest,especialidade);
-                EspecialidadeResponse especialidadeResponse = new EspecialidadeResponse();
-                BeanUtils.copyProperties(especialidade, especialidadeResponse);
-                return especialidadeResponse;
+                var especialidadeAlterada = especialidadeMapper.toEspecialidade(especialidadeRequest);
+                especialidadeAlterada.setId(id);
+                especialidadeRepository.save(especialidadeAlterada);
+                return especialidadeMapper.toEspecialidadeResponse(especialidadeAlterada);
             }
         ).orElseThrow(() -> new NaoEncontradoException("Especialidade não encontrada"));
     }
@@ -75,5 +66,9 @@ public class EspecialidadeService {
         else{
             throw new NaoEncontradoException("Especialidade não encontrada");
         }
+    }
+
+    private boolean verificarSeNomeExiste(String nome){
+        return especialidadeRepository.existsByNome(nome);
     }
 }
