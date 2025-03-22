@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.Set;
+import java.util.UUID;
 
 @Getter
 @Setter
@@ -14,6 +15,7 @@ import java.util.Set;
 @NoArgsConstructor
 public class DepartamentoResponse {
 
+    private UUID id;
     private String nome;
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
