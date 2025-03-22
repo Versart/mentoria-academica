@@ -24,7 +24,7 @@ public class Departamento {
 
     private String nome;
 
-    @OneToMany(mappedBy = "departamento")
+    @OneToMany(mappedBy = "departamento", cascade = CascadeType.ALL)
     private Set<Mentor> mentores;
 
 
