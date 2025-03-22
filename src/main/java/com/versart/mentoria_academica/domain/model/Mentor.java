@@ -33,11 +33,11 @@ public class Mentor {
 
     @ManyToMany
     @JoinTable(
-            name = "mentores_especialidades",
+            name = "mentores_linhas_de_pesquisa",
             joinColumns = @JoinColumn(name = "mentor_id"),
-            inverseJoinColumns = @JoinColumn(name = "especialidade_id")
+            inverseJoinColumns = @JoinColumn(name = "linha_de_pesquisa_id")
     )
-    private Set<Especialidade> especialidades;
+    private Set<LinhaDePesquisa> linhasDePesquisa;
 
 
 }

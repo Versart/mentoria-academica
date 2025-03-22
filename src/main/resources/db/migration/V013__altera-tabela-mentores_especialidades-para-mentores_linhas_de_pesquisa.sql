@@ -1,0 +1,6 @@
+alter table mentores_especialidades rename to mentores_linhas_de_pesquisa;
+
+alter table mentores_linhas_de_pesquisa rename column especialidade_id to linha_de_pesquisa_id;
+alter table mentores_linhas_de_pesquisa drop constraint mentores_especialidades_especialidade_id_fkey;
+alter table mentores_linhas_de_pesquisa add constraint mentores_linhas_de_pesquisa_linha_de_pesquisa_id_fkey
+foreign key (linha_de_pesquisa_id) references linhas_de_pesquisa(id);

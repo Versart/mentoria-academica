@@ -6,5 +6,5 @@ import jakarta.validation.constraints.NotNull;
 
 import java.util.Set;
 
-public record MentorRequest(@NotBlank String codigo, @NotBlank String departamentoNome, @NotBlank String nomeCompleto, @NotNull @NotEmpty Set<String> especialidades) {
+public record MentorRequest(@NotBlank String codigo, @NotBlank String departamentoNome, @NotBlank String nomeCompleto, @NotNull @NotEmpty Set<String> linhasDePesquisa) {
 }

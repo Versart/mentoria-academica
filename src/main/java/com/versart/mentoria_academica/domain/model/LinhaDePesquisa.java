@@ -10,12 +10,12 @@ import java.util.Set;
 import java.util.UUID;
 
 @Entity
-@Table(name = "especialidades")
+@Table(name = "linhas_de_pesquisa")
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
-public class Especialidade {
+public class LinhaDePesquisa {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -23,6 +23,6 @@ public class Especialidade {
 
     private String nome;
 
-    @ManyToMany(mappedBy = "especialidades")
+    @ManyToMany(mappedBy = "linhasDePesquisa")
     private Set<Mentor> mentores;
 }

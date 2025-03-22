@@ -4,10 +4,10 @@ import com.versart.mentoria_academica.api.model.MentorRequest;
 import com.versart.mentoria_academica.api.model.MentorResponse;
 import com.versart.mentoria_academica.domain.exception.NaoEncontradoException;
 import com.versart.mentoria_academica.domain.model.Departamento;
-import com.versart.mentoria_academica.domain.model.Especialidade;
+import com.versart.mentoria_academica.domain.model.LinhaDePesquisa;
 import com.versart.mentoria_academica.domain.model.Mentor;
 import com.versart.mentoria_academica.domain.repository.DepartamentoRepository;
-import com.versart.mentoria_academica.domain.repository.EspecialidadeRepository;
+import com.versart.mentoria_academica.domain.repository.LinhaDePesquisaRepository;
 import org.mapstruct.Context;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -24,11 +24,11 @@ public interface MentorMapper {
 
 
 
-    @Mapping(target = "especialidades", qualifiedByName ="mapEspecialidades" )
+    @Mapping(target = "linhasDePesquisa", qualifiedByName ="mapLinhasDePesquisa" )
     @Mapping(target = "departamento", qualifiedByName ="mapDepartamento", source = "departamentoNome")
-    Mentor toMentor(MentorRequest mentorRequest, @Context EspecialidadeRepository especialidadeRepository, @Context DepartamentoRepository departamentoRepository);
+    Mentor toMentor(MentorRequest mentorRequest, @Context LinhaDePesquisaRepository linhaDePesquisaRepository, @Context DepartamentoRepository departamentoRepository);
 
-    Mentor toMentor(Mentor mentor, @Context EspecialidadeRepository especialidadeRepository, @Context DepartamentoRepository departamentoRepository);
+    Mentor toMentor(Mentor mentor, @Context LinhaDePesquisaRepository linhaDePesquisaRepository, @Context DepartamentoRepository departamentoRepository);
 
     @Mapping(target ="departamentoNome", source = "departamento.nome")
     MentorResponse toMentorResponse(Mentor mentor);
@@ -40,11 +40,11 @@ public interface MentorMapper {
         );
     }
 
-    @Named("mapEspecialidades")
-    default Set<Especialidade> mapEspecialidades(Set<String> especialidades, @Context EspecialidadeRepository especialidadeRepository) {
+    @Named("mapLinhasDePesquisa")
+    default Set<LinhaDePesquisa> mapLinhasDePesquisa(Set<String> especialidades, @Context LinhaDePesquisaRepository linhaDePesquisaRepository) {
         return especialidades.stream().map(
                 especialidade -> {
-                    return especialidadeRepository.findByNome(especialidade).orElseThrow(
+                    return linhaDePesquisaRepository.findByNome(especialidade).orElseThrow(
                             () -> new NaoEncontradoException("Especialidade não encontrada"));
 
                 }

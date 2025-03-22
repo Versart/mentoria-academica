@@ -7,7 +7,7 @@ import com.versart.mentoria_academica.domain.exception.DadoUnicoDuplicadoExcepti
 import com.versart.mentoria_academica.domain.exception.NaoEncontradoException;
 import com.versart.mentoria_academica.domain.model.Mentor;
 import com.versart.mentoria_academica.domain.repository.DepartamentoRepository;
-import com.versart.mentoria_academica.domain.repository.EspecialidadeRepository;
+import com.versart.mentoria_academica.domain.repository.LinhaDePesquisaRepository;
 import com.versart.mentoria_academica.domain.repository.MentorRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -27,14 +27,14 @@ public class MentorService {
 
     private final DepartamentoRepository departamentoRepository;
 
-    private final EspecialidadeRepository especialidadeRepository;
+    private final LinhaDePesquisaRepository especialidadeRepository;
 
     private final MentorMapper mentorMapper;
 
     @Transactional
     public MentorResponse salvarMentor(MentorRequest mentorRequest) {
         log.info("Criando um novo mentor");
-        if(verificarSeCodigoExiste(mentorRequest.codigo())){
+        if(mentorRepository.existsByCodigo(mentorRequest.codigo())){
             throw new DadoUnicoDuplicadoException("Código já utilizado");
         }
         Mentor mentor = mentorMapper.toMentor(mentorRequest,especialidadeRepository,departamentoRepository);
@@ -58,7 +58,7 @@ public class MentorService {
     @Transactional
     public MentorResponse alterarMentor(UUID id, MentorRequest mentorRequest) {
         log.info("Alterando o mentor com o id {}", id);
-        if(verificarSeCodigoExiste(mentorRequest.codigo())){
+        if(mentorRepository.existsByCodigo(mentorRequest.codigo())){
             throw new DadoUnicoDuplicadoException("Código já utilizado");
         }
         return mentorRepository.findById(id).map(
@@ -82,8 +82,4 @@ public class MentorService {
         }
     }
 
-    private boolean verificarSeCodigoExiste(String codigo) {
-        log.info("Verificando se existe um mentor com o código {}", codigo);
-        return mentorRepository.existsByCodigo(codigo);
-    }
 }
