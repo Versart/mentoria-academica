@@ -51,24 +51,24 @@ public class DepartamentoService {
     @Transactional
     public DepartamentoResponse alterarDepartamento(UUID id, DepartamentoRequest departamentoRequest) {
         log.info("Alterando o departamento com o id {}", id);
-        if(departamentoRepository.existsByNome(departamentoRequest.nome())){
-            throw new DadoUnicoDuplicadoException("Departamento já cadastrado!");
-        }
         return departamentoRepository.findById(id).map(
-                especialidade -> {
+                departamento -> {
+                    if(!departamento.getNome().equalsIgnoreCase(departamentoRequest.nome())
+                        && departamentoRepository.existsByNome(departamentoRequest.nome())){
+                        throw new DadoUnicoDuplicadoException("Departamento já cadastrado!");
+                    }
                     var departamentoAlterado = departamentoMapper.toDepartamento(departamentoRequest);
                     departamentoAlterado.setId(id);
                     departamentoRepository.save(departamentoAlterado);
                     return departamentoMapper.toDepartamentoResponse(departamentoAlterado);
                 }
-        ).orElseThrow(() -> new NaoEncontradoException("Especialidade não encontrada"));
+        ).orElseThrow(() -> new NaoEncontradoException("Departamento não encontrado"));
     }
 
     @Transactional
     public void deletarDepartamento(UUID id) {
         log.info("Removendo o departamento com o id {}", id);
         if(departamentoRepository.existsById(id)){
-            //if(departamentoRepository.)
             departamentoRepository.deleteById(id);
         }
         else{

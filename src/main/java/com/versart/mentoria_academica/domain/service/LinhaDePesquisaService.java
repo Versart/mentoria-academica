@@ -45,15 +45,17 @@ public class LinhaDePesquisaService {
 
     @Transactional
     public LinhaDePesquisaResponse alterarEspecialidade(UUID id, LinhaDePesquisaRequest linhaDePesquisaRequest) {
-        if(linhaDePesquisaRepository.existsByNome(linhaDePesquisaRequest.nome())){
-            throw new DadoUnicoDuplicadoException("Linha de Pesquisa já cadastrada!");
-        }
         return linhaDePesquisaRepository.findById(id).map(
-            especialidade -> {
+            linhaDePesquisa -> {
+                if(!linhaDePesquisa.getNome().equalsIgnoreCase(linhaDePesquisaRequest.nome())
+                        && linhaDePesquisaRepository.existsByNome(linhaDePesquisaRequest.nome())) {
+                    throw new DadoUnicoDuplicadoException("Linha de Pesquisa já cadastrada!");
+                }
                 var linhaDePesquisaAlterada = linhaDePesquisaMapper.toLinhaDePesquisa(linhaDePesquisaRequest);
                 linhaDePesquisaAlterada.setId(id);
                 linhaDePesquisaRepository.save(linhaDePesquisaAlterada);
                 return linhaDePesquisaMapper.toLinhaDePesquisaResponse(linhaDePesquisaAlterada);
+
             }
         ).orElseThrow(() -> new NaoEncontradoException("Linha de Pesquisa não encontrada"));
     }

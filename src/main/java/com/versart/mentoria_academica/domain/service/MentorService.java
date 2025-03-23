@@ -58,11 +58,13 @@ public class MentorService {
     @Transactional
     public MentorResponse alterarMentor(UUID id, MentorRequest mentorRequest) {
         log.info("Alterando o mentor com o id {}", id);
-        if(mentorRepository.existsByCodigo(mentorRequest.codigo())){
-            throw new DadoUnicoDuplicadoException("Código já utilizado");
-        }
         return mentorRepository.findById(id).map(
                 mentor -> {
+                    if(!mentor.getCodigo().equalsIgnoreCase(mentorRequest.codigo())
+                            && mentorRepository.existsByCodigo(mentorRequest.codigo())){
+                        throw new DadoUnicoDuplicadoException("Código já utilizado");
+
+                    }
                     Mentor mentorAlterado = mentorMapper.toMentor(mentorRequest,especialidadeRepository,departamentoRepository);
                     mentorAlterado.setId(id);
                     mentorRepository.save(mentorAlterado);
