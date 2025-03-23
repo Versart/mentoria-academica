@@ -9,6 +9,7 @@ import com.versart.mentoria_academica.domain.model.LinhaDePesquisa;
 import com.versart.mentoria_academica.domain.repository.LinhaDePesquisaRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -17,6 +18,7 @@ import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class LinhaDePesquisaService {
 
     private final LinhaDePesquisaRepository linhaDePesquisaRepository;
@@ -25,6 +27,7 @@ public class LinhaDePesquisaService {
 
     @Transactional
     public LinhaDePesquisaResponse salvarLinhaDePesquisa(LinhaDePesquisaRequest linhaDePesquisaRequest) {
+        log.info("Criando uma nova linha de pesquisa");
         if(linhaDePesquisaRepository.existsByNome(linhaDePesquisaRequest.nome())){
             throw new DadoUnicoDuplicadoException("Linha de Pesquisa já cadastrada!");
         }
@@ -34,17 +37,20 @@ public class LinhaDePesquisaService {
     }
 
     public Page<LinhaDePesquisaResponse> listarLinhasDePesquisa(Pageable pageable) {
+        log.info("Buscando todas as linhas de pesquisa");
         Page<LinhaDePesquisa> linhasDePesquisa = linhaDePesquisaRepository.findAll(pageable);
         return  linhasDePesquisa.map(linhaDePesquisaMapper::toLinhaDePesquisaResponse);
     }
 
     public LinhaDePesquisaResponse buscarLinhaDePesquisaPorId(UUID id) {
+        log.info("Buscando a linha de pesquisa com o id {}", id);
         return linhaDePesquisaRepository.findById(id).map(linhaDePesquisaMapper::toLinhaDePesquisaResponse)
                 .orElseThrow(() -> new NaoEncontradoException("Linha de Pesquisa não encontrada"));
     }
 
     @Transactional
     public LinhaDePesquisaResponse alterarEspecialidade(UUID id, LinhaDePesquisaRequest linhaDePesquisaRequest) {
+        log.info("Alterando a linha de pesquisa com o id {}", id);
         return linhaDePesquisaRepository.findById(id).map(
             linhaDePesquisa -> {
                 if(!linhaDePesquisa.getNome().equalsIgnoreCase(linhaDePesquisaRequest.nome())
@@ -62,6 +68,7 @@ public class LinhaDePesquisaService {
 
     @Transactional
     public void deletarLinhaDePesquisa(UUID id) {
+        log.info("Removendo a linha de pesquisa com o id{}", id);
         if(linhaDePesquisaRepository.existsById(id)){
             linhaDePesquisaRepository.deleteById(id);
         }
