@@ -1,10 +1,7 @@
 package com.versart.mentoria_academica.domain.model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.Set;
 import java.util.UUID;
@@ -15,12 +12,15 @@ import java.util.UUID;
 @NoArgsConstructor
 @Getter
 @Setter
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class Mentor {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @EqualsAndHashCode.Include
     private UUID id;
 
+    @EqualsAndHashCode.Include
     private String codigo;
 
     private String nomeCompleto;
