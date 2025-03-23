@@ -45,7 +45,7 @@ public interface MentorMapper {
         return especialidades.stream().map(
                 especialidade -> {
                     return linhaDePesquisaRepository.findByNome(especialidade).orElseThrow(
-                            () -> new NaoEncontradoException("Especialidade não encontrada"));
+                            () -> new NaoEncontradoException("Linha de Pesquisa não encontrada"));
 
                 }
         ).collect(Collectors.toSet());
