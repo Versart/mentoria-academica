@@ -12,3 +12,8 @@ server:
   tomcat:
     threads:
       max: 200
+springdoc:
+  swagger-ui:
+    enabled: true
+  api-docs:
+    enabled: true
