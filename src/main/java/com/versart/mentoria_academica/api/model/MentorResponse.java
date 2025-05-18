@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.Set;
 import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
@@ -18,5 +19,5 @@ public class MentorResponse {
 
     private String departamentoNome;
 
-
+    private Set<String> linhasDePesquisa;
 }
