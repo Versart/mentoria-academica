@@ -31,6 +31,7 @@ public interface MentorMapper {
     Mentor toMentor(Mentor mentor, @Context LinhaDePesquisaRepository linhaDePesquisaRepository, @Context DepartamentoRepository departamentoRepository);
 
     @Mapping(target ="departamentoNome", source = "departamento.nome")
+    @Mapping(target = "linhasDePesquisa", qualifiedByName = "mapLinhasDePesquisaString")
     MentorResponse toMentorResponse(Mentor mentor);
 
     @Named("mapDepartamento")
@@ -52,4 +53,11 @@ public interface MentorMapper {
     }
 
     Set<MentorResponse> toMentorResponseSet(Set<Mentor> mentores);
+
+    @Named("mapLinhasDePesquisaString")
+    default Set<String> mapLinhasDePesquisaString(Set<LinhaDePesquisa> linhasDePesquisas) {
+        return linhasDePesquisas.stream().map(
+                linhasePesquisa -> String.format("%s", linhasePesquisa.getNome())
+        ).collect(Collectors.toSet());
+    }
 }
