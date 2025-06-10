@@ -55,6 +55,11 @@ public class MentorService {
                 .orElseThrow(() -> new NaoEncontradoException("Mentor não encontrado"));
     }
 
+    public Page<MentorResponse> buscarMentoresPorNome(String nomeCompleto, Pageable pageable) {
+        log.info("Buscando mentores que contenham {} no nome", nomeCompleto);
+        return mentorRepository.findByNomeCompletoIgnoreCaseContains(nomeCompleto, pageable).map(mentorMapper::toMentorResponse);
+    }
+
     @Transactional
     public MentorResponse alterarMentor(UUID id, MentorRequest mentorRequest) {
         log.info("Alterando o mentor com o id {}", id);
