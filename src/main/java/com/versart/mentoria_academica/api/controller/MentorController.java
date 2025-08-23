@@ -20,7 +20,6 @@ import java.util.UUID;
 @RequestMapping("/v1/mentores")
 @RequiredArgsConstructor
 @Slf4j
-@CrossOrigin("*")
 public class MentorController {
 
     private final MentorService mentorService;
