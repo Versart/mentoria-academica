@@ -1,0 +1,1 @@
+alter table mentores add column email  varchar(100) unique not null;

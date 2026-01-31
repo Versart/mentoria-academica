@@ -10,6 +10,11 @@ import com.versart.mentoria_academica.domain.repository.DepartamentoRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -26,6 +31,7 @@ public class DepartamentoService {
     private final DepartamentoMapper departamentoMapper;
 
     @Transactional
+    @CacheEvict(value = "departamentosPage",allEntries = true)
     public DepartamentoResponse salvarDepartamento(DepartamentoRequest departamentoRequest) {
         log.info("Criando um novo departamento");
         if(departamentoRepository.existsByNome(departamentoRequest.nome())){
@@ -36,12 +42,14 @@ public class DepartamentoService {
         return departamentoMapper.toDepartamentoResponse(departamentoSalvo);
     }
 
+    @Cacheable("departamentosPage")
     public Page<DepartamentoResponse> listarDepartamentos(Pageable pageable) {
         log.info("Buscando todos os departamentos");
         Page<Departamento> departamentos = departamentoRepository.findAll(pageable);
         return  departamentos.map(departamentoMapper::toDepartamentoResponse);
     }
 
+    @Cacheable(value = "departamentos", key = "#id")
     public DepartamentoResponse buscarDepartamentoPorId(UUID id) {
         log.info("Buscando o departamento com o id {}", id);
         return departamentoRepository.findById(id).map(departamentoMapper::toDepartamentoResponse)
@@ -49,6 +57,8 @@ public class DepartamentoService {
     }
 
     @Transactional
+    @CachePut(value = "departamentos", key = "#id")
+    @CacheEvict(value = "departamentosPage", allEntries = true)
     public DepartamentoResponse alterarDepartamento(UUID id, DepartamentoRequest departamentoRequest) {
         log.info("Alterando o departamento com o id {}", id);
         return departamentoRepository.findById(id).map(
@@ -66,6 +76,10 @@ public class DepartamentoService {
     }
 
     @Transactional
+      @Caching(evict = {
+        @CacheEvict(value = "departamentos", key = "#id"),
+        @CacheEvict(value = {"departamentosPage"}, allEntries = true)
+    })
     public void deletarDepartamento(UUID id) {
         log.info("Removendo o departamento com o id {}", id);
         if(departamentoRepository.existsById(id)){

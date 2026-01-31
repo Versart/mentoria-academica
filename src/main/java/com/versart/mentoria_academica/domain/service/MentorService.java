@@ -12,6 +12,11 @@ import com.versart.mentoria_academica.domain.repository.MentorRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -32,23 +37,28 @@ public class MentorService {
     private final MentorMapper mentorMapper;
 
     @Transactional
+    @CacheEvict(value = "mentoresPage", allEntries = true)
     public MentorResponse salvarMentor(MentorRequest mentorRequest) {
         log.info("Criando um novo mentor");
         if(mentorRepository.existsByCodigo(mentorRequest.codigo())){
             throw new DadoUnicoDuplicadoException("Código já utilizado");
+        }
+        if(mentorRepository.existsByEmail(mentorRequest.email())){
+            throw new DadoUnicoDuplicadoException("Email já utilizado");
         }
         Mentor mentor = mentorMapper.toMentor(mentorRequest,especialidadeRepository,departamentoRepository);
         Mentor mentorSalvo = mentorRepository.save(mentor);
         return mentorMapper.toMentorResponse(mentorSalvo);
     }
 
+    @Cacheable("mentoresPage")
     public Page<MentorResponse> listarMentores(Pageable pageable) {
         log.info("Buscando todos os mentores");
         Page<Mentor> pageMentores = mentorRepository.findAll(pageable);
         return pageMentores.map(mentorMapper::toMentorResponse);
 
     }
-
+    @Cacheable(value = "mentores", key = "#id")
     public MentorResponse buscarMentorPorId(UUID id) {
         log.info("Buscando o mentor com o id {}", id);
         return mentorRepository.findById(id).map(mentorMapper::toMentorResponse)
@@ -61,6 +71,8 @@ public class MentorService {
     }
 
     @Transactional
+    @CachePut(value = "mentores", key = "#id")
+    @CacheEvict(value = "mentoresPage", allEntries = true)
     public MentorResponse alterarMentor(UUID id, MentorRequest mentorRequest) {
         log.info("Alterando o mentor com o id {}", id);
         return mentorRepository.findById(id).map(
@@ -79,6 +91,10 @@ public class MentorService {
     }
 
     @Transactional
+    @Caching(evict = {
+        @CacheEvict(value = "mentores", key = "#id"),
+        @CacheEvict(value = {"mentoresPage"}, allEntries = true)
+    })
     public void deletarMentor(UUID id) {
         log.info("Removendo o mentor com o id");
         if(mentorRepository.existsById(id)){

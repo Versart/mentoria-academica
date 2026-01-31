@@ -7,6 +7,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
+import org.springframework.mail.MailException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -73,4 +74,17 @@ public class APIExceptionHandler extends ResponseEntityExceptionHandler {
 
         return handleExceptionInternal(ex,problema,new HttpHeaders(),httpStatus,request);
     }
+
+    @ExceptionHandler(MailException.class)
+    public ResponseEntity<Object> handleMailException(MailException ex, WebRequest request ) {
+        HttpStatus httpStatus = HttpStatus.SERVICE_UNAVAILABLE;
+        Problema problema = Problema.builder()
+                .statusCode(httpStatus.value())
+                .dataHora(OffsetDateTime.now())
+                .messagem("Falha ao enviar o email")
+                .build();
+
+        return handleExceptionInternal(ex,problema,new HttpHeaders(),httpStatus,request);
+    }
+
 }

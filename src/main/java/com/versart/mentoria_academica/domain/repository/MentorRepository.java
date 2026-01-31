@@ -14,6 +14,8 @@ public interface MentorRepository extends JpaRepository<Mentor, UUID> {
 
     boolean existsByCodigo(String codigo);
 
+    boolean existsByEmail(String email);
+
     Optional<Mentor> findByCodigo(String codigo);
 
     Page<Mentor> findByNomeCompletoIgnoreCaseContains(String nomeCompleto, Pageable pageable);
