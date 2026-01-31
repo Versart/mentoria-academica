@@ -13,6 +13,7 @@ import java.util.UUID;
 @Getter
 @Setter
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
+@Builder
 public class Mentor {
 
     @Id
@@ -30,6 +31,8 @@ public class Mentor {
     private Departamento departamento;
 
     private String descricao;
+
+    private String email;
 
     @ManyToMany
     @JoinTable(
