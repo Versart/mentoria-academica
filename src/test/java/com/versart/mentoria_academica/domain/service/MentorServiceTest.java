@@ -115,6 +115,8 @@ public class MentorServiceTest {
 
         BDDMockito.when(mentorRepository.findByNomeCompletoIgnoreCaseContains(ArgumentMatchers.anyString(),
             ArgumentMatchers.any(PageRequest.class))).thenReturn(mentorPorNome);
+        
+        BDDMockito.when(mentorMapper.toMentorResponse(ArgumentMatchers.any(Mentor.class))).thenReturn(MentorCreator.criarMentorResponse());
 
         Page<MentorResponse> mentorPageRetornada = mentorService.buscarMentoresPorNome(nomeBuscado, PageRequest.of(0, 1));
 
