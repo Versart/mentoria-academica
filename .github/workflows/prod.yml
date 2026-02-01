@@ -1,0 +1,21 @@
+name: deploy
+
+on:
+    push:
+        branches: ["main"]
+jobs:
+    build-and-test:
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: Checkout código
+              uses: actions/checkout@v4
+
+            - name: Setup Java
+              uses: actions/setup-java@4
+              with:
+                distribuition: 'temurim'
+                java-version: 21 
+                cache: maven
+            - name: Build e testes
+              run: ./mvn clean verify
