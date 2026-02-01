@@ -113,6 +113,12 @@
       <scope>test</scope>
     </dependency>
 
+	<dependency>
+		<groupId>net.bytebuddy</groupId>
+		<artifactId>byte-buddy</artifactId>
+		<version>LATEST</version>
+	</dependency>
+
 	</dependencies>
 
 	<build>
