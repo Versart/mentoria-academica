@@ -19,11 +19,6 @@ spring:
             auth: true
             starttls:
               enable: true
-
-server:
-  tomcat:
-    threads:
-      max: 200
 springdoc:
   swagger-ui:
     enabled: true
