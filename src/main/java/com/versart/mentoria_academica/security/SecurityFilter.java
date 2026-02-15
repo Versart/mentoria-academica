@@ -55,6 +55,7 @@ public class SecurityFilter extends OncePerRequestFilter{
                     ResponseEntity<String> respostaToken = restTemplate.exchange(urlVerificarToken, HttpMethod.POST,
                     httpEntity,String.class );
                     List<GrantedAuthority> permissoes;
+                    log.info("Verificando status code do endpoint ao verificar o token {}", respostaToken.getStatusCode());
                     if(respostaToken.getStatusCode().is2xxSuccessful()) {
                         log.info("Token verificado");
                         String userId = PegarUserIdToken(token.token());
