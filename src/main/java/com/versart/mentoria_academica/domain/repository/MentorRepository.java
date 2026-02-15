@@ -31,6 +31,6 @@ public interface MentorRepository extends JpaRepository<Mentor, UUID> {
        and (:linha is null or lower(l.nome) = lower(cast(:linha as string)))
        and (:nome is null or lower(m.nomeCompleto) like lower(cast(:nome as string)))
        """)
-    Page<Mentor> teste(@Param("nome")String nome,@Param("departamento")String departamentoNome, @Param("linha")String linhasDePesquisaNome, 
+    Page<Mentor> buscaMentoresFiltro(@Param("nome")String nome,@Param("departamento")String departamentoNome, @Param("linha")String linhasDePesquisaNome, 
      Pageable pageable);
 }
