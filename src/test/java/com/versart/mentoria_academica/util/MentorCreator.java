@@ -41,6 +41,7 @@ public class MentorCreator {
             .descricao("Professor de.....")
             .email("professor@email.com")
             .nomeCompleto("João da Silva")
+            .linhasDePesquisa(Set.of(LinhaDePesquisaCreator.criarLinhaDePesquisaResponse().getNome()))
             .build();
     }
 
