@@ -52,6 +52,7 @@ public class MentorCreator {
             .email("professor@email.com")
             .nomeCompleto("João da Silva")
             .linhasDePesquisa(Set.of("Robótica"))
+            .disponivel(true)
             .build();
     }
 }

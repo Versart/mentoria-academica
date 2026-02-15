@@ -71,7 +71,7 @@ public class MentorService {
         if (nomeCompleto != null && !nomeCompleto.isBlank()) {
             nomeCompleto = "%" + nomeCompleto + "%";
         }
-        return mentorRepository.teste(nomeCompleto, departamento,linhaDePesquisa,pageable).map(mentorMapper::toMentorResponse);
+        return mentorRepository.buscaMentoresFiltro(nomeCompleto, departamento,linhaDePesquisa,pageable).map(mentorMapper::toMentorResponse);
         //return mentorRepository.findByNomeCompletoIgnoreCaseContains(nomeCompleto, pageable).map(mentorMapper::toMentorResponse);
     }
 

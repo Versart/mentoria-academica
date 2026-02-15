@@ -113,7 +113,8 @@ public class MentorServiceTest {
         String nomeLinhaPesquisa = MentorCreator.criarMentorRequest().linhasDePesquisa().stream().findFirst().get();
         Page<Mentor> mentorPorNome = new PageImpl<>(List.of(MentorCreator.criarMentorComId()));
 
-        BDDMockito.when(mentorRepository.findByNomeCompletoIgnoreCaseContains(ArgumentMatchers.anyString(),
+        BDDMockito.when(mentorRepository.buscaMentoresFiltro(ArgumentMatchers.anyString(),ArgumentMatchers.anyString(),
+            ArgumentMatchers.anyString(),
             ArgumentMatchers.any(PageRequest.class))).thenReturn(mentorPorNome);
         
         BDDMockito.when(mentorMapper.toMentorResponse(ArgumentMatchers.any(Mentor.class))).thenReturn(MentorCreator.criarMentorResponse());
