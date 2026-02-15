@@ -3,6 +3,8 @@ package com.versart.mentoria_academica.api.controller;
 import com.versart.mentoria_academica.api.model.DepartamentoRequest;
 import com.versart.mentoria_academica.api.model.DepartamentoResponse;
 import com.versart.mentoria_academica.domain.service.DepartamentoService;
+
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -17,6 +19,7 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/v1/departamentos")
 @RequiredArgsConstructor
+@SecurityRequirement(name = "bearer-key")
 @Slf4j
 public class DepartamentoController {
 

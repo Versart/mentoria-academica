@@ -8,7 +8,7 @@ import com.versart.mentoria_academica.api.model.EmailRequest;
 import com.versart.mentoria_academica.api.model.EmailResponse;
 import com.versart.mentoria_academica.domain.service.EmailService;
 
-
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 @RestController
 @RequestMapping("/v1/emails")
 @RequiredArgsConstructor
+@SecurityRequirement(name = "bearer-key")
 @Slf4j
 public class EmailController {
 

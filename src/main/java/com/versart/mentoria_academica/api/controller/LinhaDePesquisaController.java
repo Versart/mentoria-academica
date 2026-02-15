@@ -3,6 +3,8 @@ package com.versart.mentoria_academica.api.controller;
 import com.versart.mentoria_academica.api.model.LinhaDePesquisaRequest;
 import com.versart.mentoria_academica.api.model.LinhaDePesquisaResponse;
 import com.versart.mentoria_academica.domain.service.LinhaDePesquisaService;
+
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -17,6 +19,7 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/v1/linhas-de-pesquisa")
 @RequiredArgsConstructor
+@SecurityRequirement(name = "bearer-key")
 @Slf4j
 public class LinhaDePesquisaController {
 
