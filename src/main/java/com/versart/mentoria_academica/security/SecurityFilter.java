@@ -29,9 +29,11 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Component
 @RequiredArgsConstructor
+@Slf4j
 public class SecurityFilter extends OncePerRequestFilter{
 
     private final String urlVerificarToken = "https://suap.ifma.edu.br/api/token/verify";
@@ -45,14 +47,16 @@ public class SecurityFilter extends OncePerRequestFilter{
             throws ServletException, IOException {
         
             TokenRequest token = new TokenRequest(pegarToken(request));
-
+            log.info("Entrando no filtro");
             if(token.token() != null) {
                 try{
+                    log.info("Verifiquei que tenho token");
                     HttpEntity<TokenRequest> httpEntity = new HttpEntity<>(token);
                     ResponseEntity<String> respostaToken = restTemplate.exchange(urlVerificarToken, HttpMethod.POST,
                     httpEntity,String.class );
                     List<GrantedAuthority> permissoes;
                     if(respostaToken.getStatusCode().is2xxSuccessful()) {
+                        log.info("Token verificado");
                         String userId = PegarUserIdToken(token.token());
                         HttpHeaders httpHeaders = new HttpHeaders();
                         httpHeaders.setBearerAuth(token.token());
@@ -63,9 +67,10 @@ public class SecurityFilter extends OncePerRequestFilter{
                         }
                         else
                             permissoes = List.of();
-
+                        log.info("Já inseri as permissões");
                         var authentication = new UsernamePasswordAuthenticationToken(userId, null,permissoes);
                         SecurityContextHolder.getContext().setAuthentication(authentication);
+                        log.info("sucesso");
                     }
                     else{
                         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
