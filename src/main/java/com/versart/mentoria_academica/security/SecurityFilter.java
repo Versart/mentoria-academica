@@ -79,6 +79,8 @@ public class SecurityFilter extends OncePerRequestFilter{
                 }
                 catch(HttpClientErrorException | HttpServerErrorException e) {
                     response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                    log.info("Erro ao verificar token {}", e.getMessage());
+                    return;
                 }
             }
             filterChain.doFilter(request, response);
