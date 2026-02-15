@@ -43,9 +43,13 @@ public class MentorController {
     }
 
     @GetMapping("/find")
-    public ResponseEntity<Page<MentorResponse>> buscarMentoresPorNome(@RequestParam(required = false) String nomeCompleto, @ParameterObject Pageable pageable) {
+    public ResponseEntity<Page<MentorResponse>> buscarMentoresPorNome(
+        @RequestParam(required = false) String nomeCompleto, 
+        @RequestParam(required = false) String departamento,
+        @RequestParam(required = false) String linhaDePesquisa,
+        @ParameterObject Pageable pageable) {
         log.info("Requisição recebida para buscar mentores que contenham {} no nome", nomeCompleto);
-        return ResponseEntity.ok(mentorService.buscarMentoresPorNome(nomeCompleto,pageable));
+        return ResponseEntity.ok(mentorService.buscarMentoresPorNome(nomeCompleto,departamento,linhaDePesquisa,pageable));
     }
 
     @PutMapping("/{id}")

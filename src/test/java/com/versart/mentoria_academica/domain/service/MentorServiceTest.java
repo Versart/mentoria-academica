@@ -109,7 +109,8 @@ public class MentorServiceTest {
     @DisplayName("buscarMentoresPorNome retorna page de mentores quando bem sucedido")
     void buscarMentoresPorNome_RetornaPageDeMentores_QuandoBemSucedido() {
         String nomeBuscado = MentorCreator.criarMentorRequest().nomeCompleto();
-
+        String nomeDepartamento = MentorCreator.criarMentorRequest().departamentoNome();
+        String nomeLinhaPesquisa = MentorCreator.criarMentorRequest().linhasDePesquisa().stream().findFirst().get();
         Page<Mentor> mentorPorNome = new PageImpl<>(List.of(MentorCreator.criarMentorComId()));
 
         BDDMockito.when(mentorRepository.findByNomeCompletoIgnoreCaseContains(ArgumentMatchers.anyString(),
@@ -117,7 +118,8 @@ public class MentorServiceTest {
         
         BDDMockito.when(mentorMapper.toMentorResponse(ArgumentMatchers.any(Mentor.class))).thenReturn(MentorCreator.criarMentorResponse());
 
-        Page<MentorResponse> mentorPageRetornada = mentorService.buscarMentoresPorNome(nomeBuscado, PageRequest.of(0, 1));
+        Page<MentorResponse> mentorPageRetornada = mentorService.buscarMentoresPorNome(nomeBuscado, nomeDepartamento,
+            nomeLinhaPesquisa,PageRequest.of(0, 1));
 
         Assertions.assertThat(mentorPageRetornada).isNotNull().isNotEmpty();
 

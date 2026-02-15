@@ -24,4 +24,6 @@ public class MentorResponse {
     private Set<String> linhasDePesquisa;
 
     private String email;
+
+    private Boolean disponivel;
 }

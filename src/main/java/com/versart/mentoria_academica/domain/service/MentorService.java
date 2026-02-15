@@ -65,9 +65,14 @@ public class MentorService {
                 .orElseThrow(() -> new NaoEncontradoException("Mentor não encontrado"));
     }
 
-    public Page<MentorResponse> buscarMentoresPorNome(String nomeCompleto, Pageable pageable) {
-        log.info("Buscando mentores que contenham {} no nome", nomeCompleto);
-        return mentorRepository.findByNomeCompletoIgnoreCaseContains(nomeCompleto, pageable).map(mentorMapper::toMentorResponse);
+    public Page<MentorResponse> buscarMentoresPorNome(String nomeCompleto,String departamento, String linhaDePesquisa, Pageable pageable) {
+        log.info("Buscando mentores que contenham {} no nome e departamento {} e " +
+        "linha de pesquisa {}", nomeCompleto,departamento,linhaDePesquisa);
+        if (nomeCompleto != null && !nomeCompleto.isBlank()) {
+            nomeCompleto = "%" + nomeCompleto + "%";
+        }
+        return mentorRepository.teste(nomeCompleto, departamento,linhaDePesquisa,pageable).map(mentorMapper::toMentorResponse);
+        //return mentorRepository.findByNomeCompletoIgnoreCaseContains(nomeCompleto, pageable).map(mentorMapper::toMentorResponse);
     }
 
     @Transactional

@@ -42,5 +42,5 @@ public class Mentor {
     )
     private Set<LinhaDePesquisa> linhasDePesquisa;
 
-
+    private Boolean disponivel;
 }
