@@ -9,5 +9,6 @@ import lombok.Builder;
 import java.util.Set;
 
 @Builder
-public record MentorRequest(@NotBlank String codigo, @NotBlank String departamentoNome, @NotBlank String nomeCompleto, @NotNull @NotEmpty Set<String> linhasDePesquisa, String descricao, @Email @NotBlank String email, Boolean disponivel) {
+public record MentorRequest(@NotBlank String codigo, @NotBlank String departamentoNome, @NotBlank String nomeCompleto, 
+    @NotNull @NotEmpty Set<String> linhasDePesquisa, String descricao, @Email @NotBlank String email, Boolean disponivel) {
 }
