@@ -53,6 +53,7 @@ public class MentorCreator {
             .nomeCompleto("João da Silva")
             .linhasDePesquisa(Set.of("Robótica"))
             .disponivel(true)
+            .descricao("Tenho várias formações em..................")
             .build();
     }
 }
