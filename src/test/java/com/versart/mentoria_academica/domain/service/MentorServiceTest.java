@@ -161,6 +161,11 @@ public class MentorServiceTest {
         Assertions.assertThatNoException().isThrownBy(() -> mentorService.deletarMentor(UUID.randomUUID()));
 
     }
+
+    @Test
+    void teste() {
+        Assertions.assertThat(true).isFalse();
+    }
     
 
   
