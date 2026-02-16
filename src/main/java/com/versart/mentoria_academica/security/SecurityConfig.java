@@ -28,7 +28,7 @@ public class SecurityConfig {
         .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
         .authorizeRequests(httpRequest -> httpRequest
             .requestMatchers("/v3/api-docs/**", "/swagger-ui.html", "/swagger-ui/**").permitAll()
-            .requestMatchers(HttpMethod.POST,"/v1/mentores/**").hasRole("ADMIN")
+            //.requestMatchers(HttpMethod.POST,"/v1/mentores/**").hasRole("ADMIN")
             .anyRequest().authenticated())
             .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
             .build();
