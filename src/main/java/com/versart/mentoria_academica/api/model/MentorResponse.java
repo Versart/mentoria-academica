@@ -26,4 +26,6 @@ public class MentorResponse {
     private String email;
 
     private Boolean disponivel;
+
+    private String descricao;
 }
