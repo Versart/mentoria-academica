@@ -45,9 +45,10 @@ public class SecurityFilter extends OncePerRequestFilter{
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
-        
-            TokenRequest token = new TokenRequest(pegarToken(request));
             log.info("Entrando no filtro");
+            TokenRequest token = new TokenRequest(pegarToken(request));
+            
+            log.info("Verificando o token {}", token);
             if(token.token() != null) {
                 try{
                     log.info("Verifiquei que tenho token");
