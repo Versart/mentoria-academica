@@ -19,4 +19,6 @@ public class DadosSUAPResponse {
     @JsonProperty("tipo_vinculo")
     private String tipoVinculo;
 
+    private Long id;
+
 }
