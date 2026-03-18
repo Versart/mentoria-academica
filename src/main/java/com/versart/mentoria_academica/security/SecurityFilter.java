@@ -1,14 +1,10 @@
 package com.versart.mentoria_academica.security;
 
 import java.io.IOException;
-import java.util.Base64;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -16,13 +12,10 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.HttpServerErrorException;
-import org.springframework.web.client.RestTemplate;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.versart.mentoria_academica.api.model.DadosSUAPResponse;
 import com.versart.mentoria_academica.api.model.TokenRequest;
+import com.versart.mentoria_academica.domain.service.TokenService;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -36,47 +29,34 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class SecurityFilter extends OncePerRequestFilter{
 
-    private final String urlVerificarToken = "https://suap.ifma.edu.br/api/token/verify";
+    
+    private final TokenService tokenService;
 
-    private final String urlDados = "https://suap.ifma.edu.br/api/rh/meus-dados";
-
-    private final RestTemplate restTemplate;
+    @Value("${url.document}")
+    private String serverUrl;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
             log.info("Entrando no filtro");
-            TokenRequest token = new TokenRequest(pegarToken(request));
+            String token = pegarToken(request);
+
+            TokenRequest tokenRequest = new TokenRequest(token);
             
             log.info("Verificando o token {}", token);
-            if(token.token() != null) {
-                try{
-                    log.info("Verifiquei que tenho token");
-                    HttpEntity<TokenRequest> httpEntity = new HttpEntity<>(token);
-                    ResponseEntity<String> respostaToken = restTemplate.exchange(urlVerificarToken, HttpMethod.POST,
-                    httpEntity,String.class );
+            if(token != null && tokenService.isTokenValido(token)) {
+                try{                    
                     List<GrantedAuthority> permissoes;
-                    log.info("Verificando status code do endpoint ao verificar o token {}", respostaToken.getStatusCode());
-                    if(respostaToken.getStatusCode().is2xxSuccessful()) {
-                        log.info("Token verificado");
-                        String userId = PegarUserIdToken(token.token());
-                        HttpHeaders httpHeaders = new HttpHeaders();
-                        httpHeaders.setBearerAuth(token.token());
-                        HttpEntity entity = new HttpEntity<>(httpHeaders);
-                        ResponseEntity<DadosSUAPResponse> respostaDados = restTemplate.exchange(urlDados, HttpMethod.GET, entity, DadosSUAPResponse.class);
-                        if(!respostaDados.getBody().getTipoVinculo().contains("Aluno")){
-                            permissoes = List.of("ROLE_ADMIN").stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList());
-                        }
-                        else
-                            permissoes = List.of();
-                        log.info("Já inseri as permissões");
-                        var authentication = new UsernamePasswordAuthenticationToken(userId, null,permissoes);
-                        SecurityContextHolder.getContext().setAuthentication(authentication);
-                        log.info("sucesso");
+                    String userId = tokenService.getSubject(token);
+                    String role = tokenService.getRole(token);
+                    if(!role.contains("Aluno")){
+                        permissoes = List.of("ROLE_ADMIN").stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList());
                     }
                     else{
-                        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                        permissoes = List.of("ROLE_USER").stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList());
                     }
+                    var authentication = new UsernamePasswordAuthenticationToken(userId, null,permissoes);
+                    SecurityContextHolder.getContext().setAuthentication(authentication);
                 }
                 catch(HttpClientErrorException | HttpServerErrorException e) {
                     response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
@@ -88,7 +68,7 @@ public class SecurityFilter extends OncePerRequestFilter{
         
     }
 
-    private String PegarUserIdToken(String token) {
+    /*private String PegarUserIdToken(String token) {
         String[] parts = token.split("\\.");
         if (parts.length >= 2) {
             String payload = new String(Base64.getUrlDecoder().decode(parts[1]));
@@ -104,7 +84,7 @@ public class SecurityFilter extends OncePerRequestFilter{
             }
         }
         return null;
-    }
+    }*/
 
     private String pegarToken(HttpServletRequest httpServletRequest) {
         String token = httpServletRequest.getHeader("Authorization");
