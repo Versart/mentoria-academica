@@ -7,7 +7,6 @@ import java.util.Optional;
 import java.util.UUID;
 
 import org.assertj.core.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -30,7 +29,7 @@ import com.versart.mentoria_academica.util.MentorCreator;
 
 
 @ExtendWith(MockitoExtension.class)
-public class MentorServiceTest {
+class MentorServiceTest {
 
     @InjectMocks
     private MentorService mentorService;
@@ -47,11 +46,6 @@ public class MentorServiceTest {
     @Mock
     private MentorMapper mentorMapper;
 
-    @BeforeEach
-    void init () {
-
-    }
-
     @Test
     @DisplayName("salvarMentor retorna mentor quando bem sucedido")
     void salvarMentor_RetornaMentor_QuandoBemSucedido() {
@@ -63,11 +57,9 @@ public class MentorServiceTest {
         BDDMockito.when(mentorMapper.toMentorResponse(ArgumentMatchers.any(Mentor.class))).thenReturn(MentorCreator.criarMentorResponse());
 
         MentorRequest mentorParaSerSalvo = MentorCreator.criarMentorRequest();
-        
         MentorResponse mentorSalvo = mentorService.salvarMentor(mentorParaSerSalvo);
 
         Assertions.assertThat(mentorSalvo).isNotNull();
-
         Assertions.assertThat(mentorSalvo.getId()).isNotNull();
 
     }

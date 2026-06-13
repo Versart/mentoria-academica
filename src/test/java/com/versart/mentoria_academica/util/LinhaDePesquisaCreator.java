@@ -16,6 +16,12 @@ public class LinhaDePesquisaCreator {
             .nome("Robótica")
             .build();
     }
+
+    public static LinhaDePesquisa criarLinhaDePesquisaSemId() {
+        return LinhaDePesquisa.builder()
+            .nome("Robótica")
+            .build();
+    }
     
     public static LinhaDePesquisaRequest criarLinhaDePesquisaRequest() {
         return LinhaDePesquisaRequest.builder()
@@ -23,9 +29,16 @@ public class LinhaDePesquisaCreator {
             .build();
     }
 
+    public static LinhaDePesquisaRequest criarLinhaDePesquisaRequest(String nome) {
+        return LinhaDePesquisaRequest.builder()
+            .nome(nome)
+            .build();
+    }
+
     public static LinhaDePesquisaResponse criarLinhaDePesquisaResponse() {
         return LinhaDePesquisaResponse.builder()
             .nome("Robótica")
+            .id(uuid)
             .build();
     }
 }
