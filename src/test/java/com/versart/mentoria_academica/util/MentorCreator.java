@@ -15,7 +15,7 @@ public class MentorCreator {
         return Mentor.builder()
             .id(uuid)
             .codigo("21212")
-            .departamento(DepartamentoCreator.criarDepartamento())
+            .departamento(DepartamentoCreator.criarDepartamentoComId())
             .descricao("Professor de.....")
             .email("professor@email.com")
             .nomeCompleto("João da Silva")
@@ -27,7 +27,7 @@ public class MentorCreator {
         return Mentor.builder()
             .id(UUID.randomUUID())
             .codigo("21212")
-            .departamento(DepartamentoCreator.criarDepartamento())
+            .departamento(DepartamentoCreator.criarDepartamentoComId())
             .descricao("Professor de.....")
             .email("professor@email.com")
             .nomeCompleto("João da Silva")
@@ -40,6 +40,17 @@ public class MentorCreator {
             .departamentoNome("Computação")
             .descricao("Professor de.....")
             .email("professor@email.com")
+            .nomeCompleto("João da Silva")
+            .linhasDePesquisa(Set.of(LinhaDePesquisaCreator.criarLinhaDePesquisaResponse().getNome()))
+            .build();
+    }
+
+     public static MentorRequest criarMentorRequest(String codigo, String email) {
+        return MentorRequest.builder()
+            .codigo(codigo)
+            .departamentoNome("Computação")
+            .descricao("Professor de.....")
+            .email(email)
             .nomeCompleto("João da Silva")
             .linhasDePesquisa(Set.of(LinhaDePesquisaCreator.criarLinhaDePesquisaResponse().getNome()))
             .build();

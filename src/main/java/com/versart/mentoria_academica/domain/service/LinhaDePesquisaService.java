@@ -59,7 +59,7 @@ public class LinhaDePesquisaService {
     @Transactional
     @CachePut(value = "linhasDePesquisa", key = "#id")
     @CacheEvict(value = "linhasDePesquisaPage", allEntries = true)
-    public LinhaDePesquisaResponse alterarEspecialidade(UUID id, LinhaDePesquisaRequest linhaDePesquisaRequest) {
+    public LinhaDePesquisaResponse alterarLinhaDePesquisa(UUID id, LinhaDePesquisaRequest linhaDePesquisaRequest) {
         log.info("Alterando a linha de pesquisa com o id {}", id);
         return linhaDePesquisaRepository.findById(id).map(
             linhaDePesquisa -> {
