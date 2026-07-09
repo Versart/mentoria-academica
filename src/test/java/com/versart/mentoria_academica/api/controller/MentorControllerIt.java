@@ -70,9 +70,9 @@ class MentorControllerIt {
 
     @BeforeEach
     void setup() {
-        Departamento departamentoSalvo = departamentoRepository.save(DepartamentoCreator.criarDepartamentoComId());
-        LinhaDePesquisa linhaDePesquisaSalva = linhaDePesquisaRepository.save(LinhaDePesquisaCreator.criarLinhaDePesquisaComId());
-        Mentor mentorParaSerSalvo = MentorCreator.criarMentorComId();
+        Departamento departamentoSalvo = departamentoRepository.save(DepartamentoCreator.criarDepartamentoSemId());
+        LinhaDePesquisa linhaDePesquisaSalva = linhaDePesquisaRepository.save(LinhaDePesquisaCreator.criarLinhaDePesquisaSemId());
+        Mentor mentorParaSerSalvo = MentorCreator.criarMentorSemId();
 
         mentorParaSerSalvo.setDepartamento(departamentoSalvo);
         mentorParaSerSalvo.setLinhasDePesquisa(Set.of(linhaDePesquisaSalva));
