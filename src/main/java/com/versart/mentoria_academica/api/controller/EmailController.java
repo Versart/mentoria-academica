@@ -8,6 +8,7 @@ import com.versart.mentoria_academica.api.model.EmailRequest;
 import com.versart.mentoria_academica.api.model.EmailResponse;
 import com.versart.mentoria_academica.domain.service.EmailService;
 
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -27,6 +28,7 @@ public class EmailController {
 
     
     @PostMapping
+    @Operation(summary = "Envia email ao mentor", tags = "Email")
     public ResponseEntity<EmailResponse> enviarEmail (@Valid @RequestBody EmailRequest emailRequest) {
         log.info("Requisição recebida para enviar email a {}", emailRequest.emailProfessor());
         return ResponseEntity.ok(emailService.enviarEmail(emailRequest));
