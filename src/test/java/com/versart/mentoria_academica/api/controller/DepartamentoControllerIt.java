@@ -56,7 +56,7 @@ class DepartamentoControllerIt {
 
     @BeforeEach
     void setup() {
-        departamentoRepository.save(DepartamentoCreator.criarDepartamentoComId());
+        departamentoRepository.save(DepartamentoCreator.criarDepartamentoSemId());
         
         String token = tokenService.gerarToken(1l, "Professor");
 

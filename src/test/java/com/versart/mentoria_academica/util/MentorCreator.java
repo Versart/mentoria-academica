@@ -25,7 +25,6 @@ public class MentorCreator {
 
     public static Mentor criarMentorSemId() {
         return Mentor.builder()
-            .id(UUID.randomUUID())
             .codigo("21212")
             .departamento(DepartamentoCreator.criarDepartamentoComId())
             .descricao("Professor de.....")

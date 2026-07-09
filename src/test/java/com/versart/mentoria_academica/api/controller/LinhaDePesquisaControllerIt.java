@@ -57,7 +57,7 @@ class LinhaDePesquisaControllerIt {
 
     @BeforeEach
     void setup() {
-        linhaDePesquisaRepository.save(LinhaDePesquisaCreator.criarLinhaDePesquisaComId());
+        linhaDePesquisaRepository.save(LinhaDePesquisaCreator.criarLinhaDePesquisaSemId());
         
         String token = tokenService.gerarToken(1l, "Professor");
 

@@ -4,6 +4,7 @@ import com.versart.mentoria_academica.api.model.MentorRequest;
 import com.versart.mentoria_academica.api.model.MentorResponse;
 import com.versart.mentoria_academica.domain.service.MentorService;
 
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -28,24 +29,28 @@ public class MentorController {
     private final MentorService mentorService;
 
     @PostMapping
+    @Operation(summary = "Cria um mentor", tags = "Mentor")
     public ResponseEntity<MentorResponse> salvarMentor(@RequestBody @Valid MentorRequest mentorRequest) {
         log.info("Requisição recebida para criar um mentor");
         return new ResponseEntity<>(mentorService.salvarMentor(mentorRequest), HttpStatus.CREATED);
     }
 
     @GetMapping
+    @Operation(summary = "Lista todos os mentores", tags = "Mentor")
     public ResponseEntity<Page<MentorResponse>> listarMentores(@ParameterObject Pageable pageable) {
         log.info("Requisição recebida para buscar todos os mentores");
         return ResponseEntity.ok(mentorService.listarMentores(pageable));
     }
 
     @GetMapping("/{id}")
+    @Operation(summary = "Busca um mentor pelo ID", tags = "Mentor")
     public ResponseEntity<MentorResponse> buscarMentorPorId(@PathVariable UUID id) {
         log.info("Requisição recebida para buscar o mentor com o id {}", id);
         return ResponseEntity.ok(mentorService.buscarMentorPorId(id));
     }
 
     @GetMapping("/find")
+    @Operation(summary = "Busca mentores pelo nome,departamento ou linha de pesquisa", tags = "Mentor")
     public ResponseEntity<Page<MentorResponse>> buscarMentoresPorNome(
         @RequestParam(required = false) String nomeCompleto, 
         @RequestParam(required = false) String departamento,
@@ -56,12 +61,14 @@ public class MentorController {
     }
 
     @PutMapping("/{id}")
+    @Operation(summary = "Altera um mentor", tags = "Mentor")
     public ResponseEntity<MentorResponse> alterarMentor(@PathVariable UUID id, @Valid @RequestBody MentorRequest mentorRequest) {
         log.info("Requisição recebida para alterar o mentor com o id {}", id);
         return ResponseEntity.ok(mentorService.alterarMentor(id,mentorRequest));
     }
 
     @DeleteMapping("/{id}")
+    @Operation(summary = "Remove um mentor", tags = "Mentor")
     public ResponseEntity<Void> deletarMentor(@PathVariable UUID id) {
         log.info("Requisição recebida para remover o mentor com o id {}", id);
         mentorService.deletarMentor(id);
