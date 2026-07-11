@@ -4,6 +4,8 @@
 
 Este repositório contém o código-fonte do servidor da plataforma. Foi desenvolvido utilizando **Java e Spring Boot** e é responsável pela persistência na base de dados e todas as regras de negócio centrais do sistema.
 
+🔗 **Link da Aplicação em Produção:** [https://mentoria-academica-676779291748.southamerica-east1.run.app/swagger-ui/index.html](https://mentoria-academica-676779291748.southamerica-east1.run.app/swagger-ui/index.html)
+
 ---
 
 ## 🔗 Repositório do Frontend
