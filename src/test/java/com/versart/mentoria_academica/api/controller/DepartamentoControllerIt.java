@@ -155,10 +155,10 @@ class DepartamentoControllerIt {
         Assertions.assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NO_CONTENT);
     }
     
-    /* 
+    
     @Test
     void teste() {
         Assertions.fail();
     }
-        */
+    
 }
