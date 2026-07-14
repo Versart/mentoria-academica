@@ -27,7 +27,7 @@ public class DepartamentoController {
     private final DepartamentoService departamentoService;
 
     @PostMapping
-    @Operation(summary = "Cria um  departamento", tags = "Departamentoss")
+    @Operation(summary = "Cria um  departamento", tags = "Departamento")
     public ResponseEntity<DepartamentoResponse> salvarDepartamento(@Valid @RequestBody DepartamentoRequest departamentoRequest) {
         log.info("Requisição recebida para criar um departamento");
         return new ResponseEntity<>(departamentoService.salvarDepartamento(departamentoRequest), HttpStatus.CREATED);
