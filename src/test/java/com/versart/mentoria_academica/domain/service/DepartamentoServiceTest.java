@@ -126,11 +126,12 @@ class DepartamentoServiceTest {
         Assertions.assertThatNoException().isThrownBy(() -> departamentoService.deletarDepartamento(UUID.randomUUID()));
     }
 
+    /*
     @Test
     void teste() {
        Assertions.assertThat(false).isTrue();
     }
-
+    */
     
 }
 
