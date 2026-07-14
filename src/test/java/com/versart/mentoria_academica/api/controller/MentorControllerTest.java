@@ -157,9 +157,4 @@ class MentorControllerTest {
             .andExpect(MockMvcResultMatchers.jsonPath("$").doesNotHaveJsonPath());
     }
 
-    @Test
-    void testefail() {
-        Assertions.fail();
-    }
-
 }
