@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.UUID;
 
 import org.hamcrest.Matchers;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentMatchers;
@@ -154,6 +155,11 @@ class MentorControllerTest {
         mockMvc.perform(MockMvcRequestBuilders.delete("/v1/mentores/{id}", UUID.randomUUID()))
             .andExpect(MockMvcResultMatchers.status().isNoContent())
             .andExpect(MockMvcResultMatchers.jsonPath("$").doesNotHaveJsonPath());
+    }
+
+    @Test
+    void testefail() {
+        Assertions.fail();
     }
 
 }
